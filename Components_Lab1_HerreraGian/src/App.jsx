@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { evaluateExpression } from "./utils";
 
 const App = () => {
   const [display, setDisplay] = useState("");
@@ -7,14 +8,18 @@ const App = () => {
   const handleClick = (value) => {
     if (isDisabled && value !== "AC") return;
 
-    if (value === "AC") {
-      clearDisplay();
-    } else if (value === "DE") {
-      deleteLastChar();
-    } else if (value === "=") {
-      calculateResult();
-    } else {
-      setDisplay((prev) => prev + value);
+    switch (value) {
+      case "AC":
+        clearDisplay();
+        break;
+      case "DE":
+        deleteLastChar();
+        break;
+      case "=":
+        calculateResult();
+        break;
+      default:
+        setDisplay((prev) => prev + value);
     }
   };
 
@@ -28,42 +33,22 @@ const App = () => {
   };
 
   const calculateResult = () => {
-    try {
-      setDisplay(eval(display).toString()); 
-    } catch {
-      setDisplay("Error");
-    }
+    const result = evaluateExpression(display);
+    setDisplay(result);
+    setIsDisabled(result === "Error");
   };
 
   return (
-    <div className="container"> 
+    <div className="container">
       <div className="calculator">
         <div className="display">{display || "0"}</div>
-
         <div className="buttons">
-          <button className="empty"></button>
-          <button className="empty"></button>
           <button onClick={() => handleClick("AC")}>AC</button>
           <button onClick={() => handleClick("DE")}>DE</button>
-
-          <button onClick={() => handleClick("7")}>7</button>
-          <button onClick={() => handleClick("8")}>8</button>
-          <button onClick={() => handleClick("9")}>9</button>
-          <button onClick={() => handleClick("*")}>×</button>
-
-          <button onClick={() => handleClick("4")}>4</button>
-          <button onClick={() => handleClick("5")}>5</button>
-          <button onClick={() => handleClick("6")}>6</button>
-          <button onClick={() => handleClick("-")}>−</button>
-
-          <button onClick={() => handleClick("1")}>1</button>
-          <button onClick={() => handleClick("2")}>2</button>
-          <button onClick={() => handleClick("3")}>3</button>
-          <button onClick={() => handleClick("+")}>+</button>
-
-          <button className="zero" onClick={() => handleClick("0")}>0</button>
-          <button onClick={() => handleClick(".")}>.</button>
           <button onClick={() => handleClick("=")}>=</button>
+          {["/","7", "8", "9", "*", "4", "5", "6", "-", "1", "2", "3", "+", '', '', "0", "."].map((char) => (
+            <button key={char} onClick={() => handleClick(char)}>{char}</button>
+          ))}
         </div>
       </div>
     </div>
@@ -71,4 +56,3 @@ const App = () => {
 };
 
 export default App;
-
