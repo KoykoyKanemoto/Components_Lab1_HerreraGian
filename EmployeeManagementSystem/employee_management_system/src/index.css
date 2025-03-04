@@ -1,0 +1,22 @@
+body {
+  font-family: BlinkMacSystemFont, 'Segoe UI';
+}
+
+code {
+  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
+    monospace;
+}
+
+table {
+   width: 80%;
+   margin: 20px auto;
+   border-collapse: collapse;
+}
+th, td {
+   border: 1px solid #ddd;
+   padding: 8px;
+   text-align: left;
+}
+th {
+   background-color: #c8e6c7;
+}
